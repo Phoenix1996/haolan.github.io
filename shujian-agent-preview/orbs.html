@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6fa">
+  <title>数鉴智能体 · 粒子状态预览</title>
+  <link rel="stylesheet" href="orbs-preview.css?v=orbs-1">
+</head>
+<body>
+  <header class="orbs-topbar">
+    <a class="back-link" href="index.html" aria-label="返回界面预览">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg>
+      <span>返回界面预览</span>
+    </a>
+    <div class="brand"><img src="assets/logo.png" alt="" width="25" height="25"><span>数鉴智能体</span></div>
+    <span class="preview-tag">原 Orb 状态预览</span>
+  </header>
+
+  <main class="orbs-main">
+    <section class="intro">
+      <div>
+        <h1>让粒子状态跟着工作节奏变化</h1>
+        <p class="intro-copy">这里直接调用当前项目内置的 Orb 引擎、Logo 点阵和状态映射。选择状态时，同一张画布会平滑衔接。</p>
+      </div>
+      <a class="source-link" href="orb-runtime/ORIGIN.md">源码与许可</a>
+    </section>
+
+    <section class="demo-layout" aria-label="粒子状态控件">
+      <div class="control-panel">
+        <div class="panel-heading">
+          <h2>状态</h2>
+          <span id="stateLabel" class="state-chip">等待中</span>
+        </div>
+        <div class="state-grid" role="group" aria-label="选择粒子状态">
+          <button type="button" data-state="idle" aria-pressed="true">等待</button>
+          <button type="button" data-state="thinking" aria-pressed="false">思考</button>
+          <button type="button" data-state="searching" aria-pressed="false">检索</button>
+          <button type="button" data-state="generating" aria-pressed="false">生成</button>
+          <button type="button" data-state="complete" aria-pressed="false">完成</button>
+          <button type="button" data-state="listening" aria-pressed="false">聆听</button>
+          <button type="button" data-state="connecting" aria-pressed="false">连接</button>
+          <button type="button" data-state="composing" aria-pressed="false">播报</button>
+        </div>
+        <div class="mapping-card">
+          <span>当前引擎状态</span>
+          <strong id="engineState">breathing</strong>
+          <p id="stateDescription">idle 映射到 breathing：低速呼吸。动画参数来自当前 agent-states.js 与 presets.js。</p>
+        </div>
+
+        <div class="control-section">
+          <div class="control-label">画布尺寸</div>
+          <div class="size-options" role="group" aria-label="选择画布尺寸">
+            <button type="button" data-size="24" aria-pressed="false">24</button>
+            <button type="button" data-size="64" aria-pressed="false">64</button>
+            <button type="button" data-size="104" aria-pressed="true">104</button>
+          </div>
+        </div>
+
+        <div class="control-section flow-section">
+          <button type="button" class="flow-button" id="flowButton" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+            <span>播放完整流程</span>
+          </button>
+          <button type="button" class="pause-button" id="pauseButton" aria-pressed="false">暂停动画</button>
+        </div>
+
+        <label class="reduce-motion-control">
+          <input type="checkbox" id="reduceMotion">
+          <span>减少动态效果</span>
+        </label>
+        <p class="motion-note" id="motionNote">系统减少动态偏好会自动生效；勾选后只绘制静态代表帧。</p>
+      </div>
+
+      <div class="orb-stage" id="orbStage">
+        <div class="orb-stage-inner">
+          <canvas id="orbCanvas" width="104" height="104" role="img" aria-label="等待状态粒子动画"></canvas>
+          <div class="orb-caption">
+            <strong id="orbCaption">等待中</strong>
+            <span>开场沿用 Logo 过渡；状态变化使用 420ms 平滑交叉淡入</span>
+          </div>
+        </div>
+        <div class="stage-footer">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span>本地动画预览，不连接任务、语音或数据库</span>
+        </div>
+      </div>
+    </section>
+
+    <details class="mapping-list">
+      <summary>查看状态映射</summary>
+      <div class="mapping-content" aria-label="状态映射说明">
+        <h2>状态映射</h2>
+      <div class="mapping-row"><span>等待</span><code>idle → breathing</code><span>低速呼吸</span></div>
+      <div class="mapping-row"><span>思考 / 生成</span><code>thinking / generating → composing</code><span>组织与连续流动</span></div>
+      <div class="mapping-row"><span>检索</span><code>searching → searching</code><span>球体检索形态</span></div>
+      <div class="mapping-row"><span>完成</span><code>complete → breathing</code><span>低速收束并触发一次完成脉冲</span></div>
+      <div class="mapping-row"><span>聆听 / 连接 / 播报</span><code>listening / connecting / composing</code><span>已有引擎状态直传；播报使用 composing</span></div>
+      </div>
+    </details>
+  </main>
+  <script type="module" src="orb-runtime/orbs-page.js?v=orbs-1"></script>
+</body>
+</html>

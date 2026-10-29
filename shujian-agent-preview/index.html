@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f6fa">
   <title>数鉴智能体 · 界面预览</title>
-  <link rel="stylesheet" href="agent-polish-preview.css">
+  <link rel="stylesheet" href="agent-polish-preview.css?v=orbs-1">
 </head>
 <body>
   <div class="preview-bar" role="toolbar" aria-label="预览状态">
@@ -18,6 +18,7 @@
       <button type="button" data-view="welcome" aria-pressed="false">新对话</button>
     </div>
     <a class="preview-components-link" href="components.html">组件样式</a>
+    <a class="preview-orbs-link" href="orbs.html">状态预览</a>
     <span class="preview-note">静态演示 · 不连接数据库</span>
   </div>
 
@@ -102,7 +103,7 @@
             <div>
               <h1 id="conversationHeading">对话</h1>
             </div>
-            <span class="completion-status" id="conversationStatus"><span></span>演示已完成</span>
+            <span class="completion-status" id="conversationStatus"><canvas id="taskStatusOrb" class="inline-orb" width="20" height="20" role="img" aria-label="完成状态动画"></canvas>演示已完成</span>
           </div>
 
           <div class="chat-body" id="chatBody">
@@ -144,7 +145,7 @@
           </div>
 
           <div class="welcome-state" id="welcomeState" hidden>
-            <img src="assets/logo.png" alt="" width="54" height="54">
+            <canvas id="welcomeOrb" class="welcome-orb" width="64" height="64" role="img" aria-label="数鉴智能体 Logo 粒子动画"></canvas>
             <h2>有什么可以帮您的吗？</h2>
           </div>
 
@@ -176,7 +177,7 @@
                 <span class="composer-shortcut-hint">Enter 发送 <i></i> Shift+Enter 换行</span>
               </div>
               <div class="composer-actions">
-                <button class="voice-mode-button" type="button" data-toast="连续语音入口仅作预览，不会采集音频。">连续语音</button>
+                <button class="voice-mode-button" type="button" data-voice-orb-toggle data-toast="连续语音入口仅作预览，不会采集音频。"><canvas id="voiceControlOrb" class="inline-orb" width="20" height="20" aria-hidden="true"></canvas><span>连续语音</span></button>
                 <button class="icon-button mic-button" id="micButton" type="button" aria-label="开启语音输入（演示）" title="语音输入（演示）">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg>
                 </button>
@@ -364,6 +365,7 @@ ORDER BY quarter;</code></pre>
     </section>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="agent-polish-preview.js"></script>
+  <script src="agent-polish-preview.js?v=orbs-1"></script>
+  <script type="module" src="orb-runtime/main-page.js?v=orbs-1"></script>
 </body>
 </html>

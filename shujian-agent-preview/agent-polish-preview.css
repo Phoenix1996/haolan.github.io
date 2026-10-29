@@ -517,6 +517,8 @@ tbody tr:hover { background: #fcfbff; }
 /* 收口后的正文层级与本地组件样式预览 */
 .preview-components-link { color: var(--brand-strong); font-size: 11px; text-decoration: none; white-space: nowrap; }
 .preview-components-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.preview-orbs-link { color: var(--brand-strong); font-size: 11px; text-decoration: none; white-space: nowrap; }
+.preview-orbs-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 .completion-status { font-size: 11px; }
 .message-meta { font-size: 11px; }
 .user-bubble { font-size: 13px; }
@@ -527,6 +529,10 @@ tbody tr:hover { background: #fcfbff; }
 .composer textarea { font-size: 13px; }
 .voice-mode-button { min-height: 28px; padding: 0 7px; border: 0; border-radius: 6px; background: transparent; color: #747d8e; font-size: 11px; cursor: pointer; white-space: nowrap; }
 .voice-mode-button:hover { background: #f5f4ff; color: var(--brand-strong); }
+.voice-mode-button { display: inline-flex; align-items: center; gap: 5px; }
+.inline-orb { display: block; width: 20px; height: 20px; flex: 0 0 20px; }
+.welcome-orb { display: block; width: 64px; height: 64px; margin-bottom: 17px; }
+.completion-status .inline-orb { width: 20px; height: 20px; }
 .panel-heading h1, .panel-heading h2 { font-size: 15px; }
 .demo-badge { font-size: 10px; }
 .primary-tabs button { font-size: 12px; }
