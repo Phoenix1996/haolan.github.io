@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6fa">
+  <title>组件样式 · 数鉴智能体预览</title>
+  <link rel="stylesheet" href="agent-polish-preview.css">
+</head>
+<body>
+  <main class="component-page">
+    <div class="component-shell">
+      <header class="component-header">
+        <div>
+          <h1>组件样式</h1>
+          <p>仅展示智能体页面可复用的基础控件，不连接服务。</p>
+        </div>
+        <a href="index.html">返回界面预览</a>
+      </header>
+      <div class="component-grid">
+        <section class="component-card component-card--wide">
+          <h2>按钮</h2>
+          <div class="component-row">
+            <button class="sample-button sample-button--primary" type="button" data-component-toast="主操作按钮">主操作</button>
+            <button class="sample-button sample-button--secondary" type="button" data-component-toast="次要操作按钮">次要操作</button>
+            <button class="sample-button sample-button--text" type="button" data-component-toast="文字按钮">文字操作</button>
+            <button class="sample-button sample-button--danger" type="button" data-component-toast="危险操作按钮">危险操作</button>
+            <button class="sample-button sample-button--loading" type="button" disabled><span class="sample-spinner" aria-hidden="true"></span>处理中</button>
+            <button class="sample-button sample-button--secondary" type="button" disabled>禁用</button>
+          </div>
+        </section>
+        <section class="component-card">
+          <h2>页签</h2>
+          <div class="sample-tabs" role="tablist" aria-label="组件样式页签">
+            <button type="button" role="tab" aria-selected="true">结果</button>
+            <button type="button" role="tab" aria-selected="false">执行轨迹</button>
+            <button type="button" role="tab" aria-selected="false">证据</button>
+          </div>
+        </section>
+        <section class="component-card">
+          <h2>输入容器</h2>
+          <label class="sr-only" for="sampleInput">示例输入框</label>
+          <textarea class="sample-input" id="sampleInput" placeholder="输入问题或补充说明…"></textarea>
+          <p class="sample-help">辅助说明用于解释输入格式或下一步操作。</p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div class="toast" id="componentToast" role="status" aria-live="polite"></div>
+  <script>
+    (function () {
+      const toast = document.getElementById('componentToast');
+      let timer = 0;
+      document.querySelectorAll('[data-component-toast]').forEach((button) => {
+        button.addEventListener('click', () => {
+          toast.textContent = button.dataset.componentToast + '（本地样式预览）';
+          toast.classList.add('is-visible');
+          window.clearTimeout(timer);
+          timer = window.setTimeout(() => toast.classList.remove('is-visible'), 1800);
+        });
+      });
+      document.querySelectorAll('.sample-tabs [role="tab"]').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.sample-tabs [role="tab"]').forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

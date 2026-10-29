@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6fa">
+  <title>数鉴智能体 · 界面预览</title>
+  <link rel="stylesheet" href="agent-polish-preview.css">
+</head>
+<body>
+  <div class="preview-bar" role="toolbar" aria-label="预览状态">
+    <div class="preview-label">
+      <span class="preview-mark" aria-hidden="true"></span>
+      <span>界面预览</span>
+    </div>
+    <div class="preview-switch" role="group" aria-label="切换预览状态">
+      <button type="button" data-view="conversation" aria-pressed="true">对话与结果</button>
+      <button type="button" data-view="welcome" aria-pressed="false">新对话</button>
+    </div>
+    <a class="preview-components-link" href="components.html">组件样式</a>
+    <span class="preview-note">静态演示 · 不连接数据库</span>
+  </div>
+
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar" id="sidebar" aria-label="对话导航">
+      <button class="new-chat-button" type="button" data-view="welcome">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>新对话</span>
+      </button>
+
+      <div class="history-heading">
+        <span>对话历史</span>
+        <button class="icon-button sidebar-collapse" id="collapseHistory" type="button" aria-label="收起对话历史" aria-expanded="true" title="收起对话历史">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="history-list">
+        <div class="history-group-label">今天</div>
+        <button class="history-item is-active" type="button" data-view="conversation">
+          <span class="history-dot" aria-hidden="true"></span>
+          <span class="history-text">
+            <strong>华东区营收与毛利率</strong>
+            <small>对比 2025 年 Q3 与 Q4</small>
+          </span>
+          <time>11:26</time>
+        </button>
+        <button class="history-item" type="button" data-toast="这是静态预览中的历史条目。">
+          <span class="history-dot is-muted" aria-hidden="true"></span>
+          <span class="history-text">
+            <strong>本月销售额同比变化</strong>
+            <small>按区域查看趋势</small>
+          </span>
+          <time>10:08</time>
+        </button>
+
+        <div class="history-group-label history-group-label--spaced">过去 7 天</div>
+        <button class="history-item" type="button" data-toast="这是静态预览中的历史条目。">
+          <span class="history-dot is-muted" aria-hidden="true"></span>
+          <span class="history-text">
+            <strong>供应商交付及时率</strong>
+            <small>查看季度变化</small>
+          </span>
+          <time>周一</time>
+        </button>
+        <button class="history-item" type="button" data-toast="这是静态预览中的历史条目。">
+          <span class="history-dot is-muted" aria-hidden="true"></span>
+          <span class="history-text">
+            <strong>库存周转情况</strong>
+            <small>重点品类与区域</small>
+          </span>
+          <time>周五</time>
+        </button>
+        <button class="history-item" type="button" data-toast="这是静态预览中的历史条目。">
+          <span class="history-dot is-muted" aria-hidden="true"></span>
+          <span class="history-text">
+            <strong>费用结构分析</strong>
+            <small>销售与管理费用</small>
+          </span>
+          <time>周四</time>
+        </button>
+      </div>
+
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+          <button class="icon-button mobile-history-toggle" type="button" id="mobileHistoryToggle" aria-label="展开对话历史">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <img src="assets/logo.png" alt="" class="topbar-logo" width="27" height="27">
+          <span class="topbar-brand">数鉴智能体</span>
+          <span class="breadcrumb-dot" aria-hidden="true">·</span>
+          <span class="current-conversation" id="currentConversation">华东区营收与毛利率</span>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <section class="conversation-panel surface" aria-label="对话内容">
+          <div class="panel-heading conversation-heading">
+            <div>
+              <h1 id="conversationHeading">对话</h1>
+            </div>
+            <span class="completion-status" id="conversationStatus"><span></span>演示已完成</span>
+          </div>
+
+          <div class="chat-body" id="chatBody">
+            <article class="message user-message">
+              <div class="message-meta"><span>我</span><time>11:24</time></div>
+              <div class="user-bubble">对比华东区 2025 年 Q3 与 Q4 的营业收入和毛利率，说明变化。</div>
+            </article>
+
+            <article class="message assistant-message">
+              <div class="assistant-message-head">
+                <div><strong>数鉴智能体</strong><span>回答</span></div>
+              </div>
+              <div class="assistant-answer">
+                <p>2025 年 Q4，华东区营业收入较 Q3 <strong>增长 10.7%</strong>，毛利率上升 <strong>1.6 个百分点</strong>。</p>
+                <p>收入从 1,284 万元升至 1,421 万元；毛利率从 28.6% 升至 30.2%。两项指标同步改善。</p>
+              </div>
+              <div class="message-actions">
+                <button type="button" class="message-action-icon" data-copy="2025 年 Q4，华东区营业收入较 Q3 增长 10.7%，毛利率上升 1.6 个百分点。收入从 1,284 万元升至 1,421 万元；毛利率从 28.6% 升至 30.2%。两项指标同步改善。" title="复制回答" aria-label="复制回答">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2"/></svg>
+                </button>
+                <button type="button" class="message-action-icon" data-answer-read="2025 年 Q4，华东区营业收入较 Q3 增长 10.7%，毛利率上升 1.6 个百分点。收入从 1,284 万元升至 1,421 万元；毛利率从 28.6% 升至 30.2%。" title="朗读回答" aria-label="朗读回答">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4z"/><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a8.5 8.5 0 0 1 0 11"/></svg>
+                </button>
+                <button type="button" class="message-action-icon" data-result-jump title="查看结果" aria-label="查看结果">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="1.8"/><path d="M3.5 9h17M9 9v11M3.5 14h17"/></svg>
+                </button>
+                <span class="feedback-action-group" id="feedbackActionGroup">
+                  <button type="button" class="message-action-icon" data-feedback-useful title="有用" aria-label="有用" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v10H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h3Zm0 0 4.3-6.1a1.3 1.3 0 0 1 2.3 1l-.8 4.1H19a2 2 0 0 1 1.9 2.6l-2 7A2 2 0 0 1 17 20H7"/></svg>
+                  </button>
+                  <button type="button" class="message-action-icon" data-feedback-useless title="无用" aria-label="无用" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14V4H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3Zm0 0 4.3 6.1a1.3 1.3 0 0 0 2.3-1l-.8-4.1H19a2 2 0 0 0 1.9-2.6l-2-7A2 2 0 0 0 17 4H7"/></svg>
+                  </button>
+                </span>
+                <span class="feedback-submitted" id="feedbackSubmitted" role="status" hidden></span>
+                <span class="message-action-meta"><time>11:26</time><span class="message-action-status">已完成</span></span>
+              </div>
+            </article>
+          </div>
+
+          <div class="welcome-state" id="welcomeState" hidden>
+            <img src="assets/logo.png" alt="" width="54" height="54">
+            <h2>有什么可以帮您的吗？</h2>
+          </div>
+
+          <form class="composer" id="composer">
+            <label class="composer-input-wrap">
+              <span class="sr-only">输入问题</span>
+              <textarea id="promptInput" rows="1" placeholder="继续提问，或输入新的问题…" aria-label="输入问题"></textarea>
+            </label>
+            <div class="composer-footer">
+              <div class="composer-tools">
+                <div class="composer-more-wrap">
+                  <button class="composer-more-button" id="composerMoreButton" type="button" aria-label="选择工作流" aria-haspopup="menu" aria-expanded="false" aria-controls="composerMoreMenu" title="选择工作流">+</button>
+                  <div class="composer-more-menu" id="composerMoreMenu" role="menu" aria-label="选择工作流" hidden>
+                    <button type="button" class="composer-more-item" data-mode="completion" role="menuitemradio" aria-checked="false">
+                      <span class="composer-more-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8 8h8M8 11.5h8M8 15h4"/><path d="m14.5 15.5 1.4 1.4 3-3"/></svg></span>
+                      <span class="composer-more-text"><span class="composer-more-title">名单补全</span><span class="composer-more-desc">上传名单文件，按企业名称或信用代码补充字段</span></span>
+                    </button>
+                    <button type="button" class="composer-more-item" data-mode="acquisition" role="menuitemradio" aria-checked="false">
+                      <span class="composer-more-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.1l-3.6 1.8v-6.9z"/></svg></span>
+                      <span class="composer-more-text"><span class="composer-more-title">条件获客</span><span class="composer-more-desc">描述目标客户与筛选条件，生成所需企业名单</span></span>
+                    </button>
+                    <button type="button" class="composer-more-item is-active" data-mode="ordinary" role="menuitemradio" aria-checked="true">
+                      <span class="composer-more-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15v11h-9l-5.5 3z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span>
+                      <span class="composer-more-text"><span class="composer-more-title">普通问答</span><span class="composer-more-desc">直接提问，由智能体自动判断查询意图</span></span>
+                    </button>
+                  </div>
+                </div>
+                <span class="composer-mode-hint" id="composerModeHint" hidden></span>
+                <span class="composer-shortcut-hint">Enter 发送 <i></i> Shift+Enter 换行</span>
+              </div>
+              <div class="composer-actions">
+                <button class="voice-mode-button" type="button" data-toast="连续语音入口仅作预览，不会采集音频。">连续语音</button>
+                <button class="icon-button mic-button" id="micButton" type="button" aria-label="开启语音输入（演示）" title="语音输入（演示）">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg>
+                </button>
+                <button class="send-button" type="submit" aria-label="发送问题" title="发送">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 11 16-7-6.8 16-2.1-6.3L4 11Z"/><path d="m11.1 13.7 4.1-4.1"/></svg>
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section class="result-panel surface" aria-label="查询结果">
+          <div class="panel-heading result-heading">
+            <div class="result-title-group">
+              <div>
+                <h2>查询结果</h2>
+              </div>
+              <span class="demo-badge">演示数据</span>
+            </div>
+            <button class="icon-button panel-more" type="button" aria-label="更多结果操作" title="更多操作" data-toast="预览中的结果操作。">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+            </button>
+          </div>
+
+          <div class="primary-tabs" role="tablist" aria-label="结果面板">
+            <button type="button" class="is-active" role="tab" aria-selected="true" data-primary-tab="result">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>
+              结果
+            </button>
+            <button type="button" role="tab" aria-selected="false" data-primary-tab="trace">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h12M6 12h8M6 19h5"/><circle cx="4" cy="5" r=".6"/><circle cx="4" cy="12" r=".6"/><circle cx="4" cy="19" r=".6"/></svg>
+              执行轨迹
+            </button>
+            <button type="button" role="tab" aria-selected="false" data-primary-tab="evidence">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.4 8.2-8 10-4.6-1.8-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+              证据
+            </button>
+          </div>
+
+          <div class="result-content" id="resultContent">
+            <section class="primary-panel" data-primary-panel="result">
+              <div class="run-summary" aria-label="本轮执行摘要">
+                <div><span>工具调用</span><strong>2</strong></div>
+                <i aria-hidden="true"></i>
+                <div><span>发现对象</span><strong>1</strong></div>
+                <i aria-hidden="true"></i>
+                <div><span>完成耗时</span><strong>4.8s</strong></div>
+                <span class="run-status"><span></span>已完成</span>
+              </div>
+
+              <div class="result-view-tabs" role="tablist" aria-label="结果展示方式">
+                <button type="button" class="is-active" role="tab" aria-selected="true" data-result-view="chart">图表</button>
+                <button type="button" role="tab" aria-selected="false" data-result-view="data">数据</button>
+                <button type="button" role="tab" aria-selected="false" data-result-view="sql">SQL</button>
+              </div>
+
+              <div class="result-view-panel" data-result-view-panel="chart">
+                <div class="chart-heading">
+                  <div>
+                    <strong>季度经营指标对比</strong>
+                    <span>营业收入 · 万元</span>
+                  </div>
+                  <button class="icon-button chart-menu" type="button" aria-label="图表选项" title="图表选项" data-toast="图表选项仅作界面预览。">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+                  </button>
+                </div>
+                <div class="chart-wrap">
+                  <svg class="comparison-chart" viewBox="0 0 560 248" role="img" aria-label="演示柱状图：华东区营业收入由2025年第三季度1284万元上升到第四季度1421万元">
+                    <g class="chart-grid">
+                      <line x1="60" y1="33" x2="535" y2="33"/><line x1="60" y1="78" x2="535" y2="78"/>
+                      <line x1="60" y1="123" x2="535" y2="123"/><line x1="60" y1="168" x2="535" y2="168"/>
+                      <line x1="60" y1="213" x2="535" y2="213"/>
+                    </g>
+                    <g class="chart-axis-labels">
+                      <text x="44" y="37" text-anchor="end">1,600</text><text x="44" y="82" text-anchor="end">1,200</text>
+                      <text x="44" y="127" text-anchor="end">800</text><text x="44" y="172" text-anchor="end">400</text>
+                      <text x="44" y="217" text-anchor="end">0</text>
+                    </g>
+                    <line class="chart-baseline" x1="60" y1="213" x2="535" y2="213"/>
+                    <rect class="bar bar-q3" x="162" y="68.6" width="84" height="144.4" rx="7"/>
+                    <rect class="bar bar-q4" x="348" y="53.1" width="84" height="159.9" rx="7"/>
+                    <text class="bar-value" x="204" y="60" text-anchor="middle">1,284</text>
+                    <text class="bar-value" x="390" y="45" text-anchor="middle">1,421</text>
+                    <text class="bar-label" x="204" y="237" text-anchor="middle">2025 Q3</text>
+                    <text class="bar-label" x="390" y="237" text-anchor="middle">2025 Q4</text>
+                  </svg>
+                  <div class="chart-legend"><span class="legend-swatch"></span><span>营业收入</span></div>
+                </div>
+              </div>
+
+              <div class="result-view-panel" data-result-view-panel="data" hidden>
+                <div class="table-toolbar"><strong>结果数据</strong><button type="button" class="text-button" data-copy="季度,区域,营业收入（万元）,毛利率&#10;2025 Q3,华东区,1284,28.6%&#10;2025 Q4,华东区,1421,30.2%">复制表格</button></div>
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>季度</th><th>区域</th><th>营业收入</th><th>毛利率</th></tr></thead>
+                    <tbody>
+                      <tr><td>2025 Q3</td><td>华东区</td><td>1,284 万元</td><td>28.6%</td></tr>
+                      <tr><td>2025 Q4</td><td>华东区</td><td>1,421 万元</td><td>30.2%</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="result-view-panel" data-result-view-panel="sql" hidden>
+                <div class="table-toolbar"><strong>只读查询示例</strong><button type="button" class="text-button" data-copy="SELECT quarter, region, revenue_wan, gross_margin_pct&#10;FROM demo_quarterly_metrics&#10;WHERE region = '华东区' AND quarter IN ('2025 Q3', '2025 Q4')&#10;ORDER BY quarter;">复制 SQL</button></div>
+                <pre class="sql-block"><code>SELECT quarter, region, revenue_wan, gross_margin_pct
+FROM demo_quarterly_metrics
+WHERE region = '华东区'
+  AND quarter IN ('2025 Q3', '2025 Q4')
+ORDER BY quarter;</code></pre>
+              </div>
+
+              <div class="insight-block">
+                <div class="insight-heading">
+                  <div><span class="insight-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a6.6 6.6 0 0 0-3.8 12v2.8h7.6v-2.8A6.6 6.6 0 0 0 12 3.5Z"/><path d="M8.5 21h7M9 18.3h6"/></svg></span><h3>图表解读</h3></div>
+                  <div class="insight-actions">
+                    <button type="button" data-copy="营业收入由 1,284 万元升至 1,421 万元，增长 10.7%。毛利率由 28.6% 升至 30.2%，提高 1.6 个百分点。两项指标均有改善。">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2"/></svg>
+                      复制
+                    </button>
+                    <button type="button" data-read="营业收入由 1,284 万元升至 1,421 万元，增长 10.7%。毛利率由 28.6% 升至 30.2%，提高 1.6 个百分点。两项指标均有改善。">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4z"/><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a8.5 8.5 0 0 1 0 11"/></svg>
+                      朗读
+                    </button>
+                  </div>
+                </div>
+                <p>营业收入增长 10.7%，毛利率提高 1.6 个百分点。两项指标方向一致，建议结合销量与成本结构进一步观察。</p>
+              </div>
+            </section>
+
+            <section class="primary-panel trace-panel" data-primary-panel="trace" hidden>
+              <div class="trace-summary"><span class="trace-status-dot"></span><div><strong>执行已完成</strong><span>这是预览的模拟轨迹，不含真实任务事件。</span></div></div>
+              <ol class="trace-list">
+                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>请求已受理</strong><span>准备读取当前对话上下文</span></div><time>11:24:03</time></li>
+                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>检查可用指标</strong><span>匹配营业收入与毛利率</span></div><time>11:24:04</time></li>
+                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>生成只读查询</strong><span>按区域与季度整理演示数据</span></div><time>11:24:05</time></li>
+                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>整理结果与解读</strong><span>生成图表和简要说明</span></div><time>11:24:06</time></li>
+              </ol>
+              <div class="trace-disclaimer">演示轨迹不代表真实 Agent 执行。</div>
+            </section>
+
+            <section class="primary-panel evidence-panel" data-primary-panel="evidence" hidden>
+              <div class="evidence-heading"><div><span class="evidence-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.4 8.2-8 10-4.6-1.8-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg></span><div><strong>本轮依据</strong><span>供核对的上下文摘要</span></div></div><span class="demo-badge">演示</span></div>
+              <dl class="evidence-list">
+                <div><dt>数据来源</dt><dd>华东经营分析 · 演示数据集</dd></div>
+                <div><dt>分析范围</dt><dd>2025 年 Q3 至 Q4 · 华东区</dd></div>
+                <div><dt>使用指标</dt><dd>营业收入、毛利率</dd></div>
+                <div><dt>数据状态</dt><dd><span class="evidence-status"><span></span>静态样例，未连接数据源</span></dd></div>
+              </dl>
+            </section>
+          </div>
+          <div class="result-empty" id="resultEmpty" hidden>
+            <img src="assets/logo.png" alt="" width="39" height="39">
+            <h3>新对话还没有查询结果</h3>
+            <p>输入问题开始对话。此预览不连接数据源，右侧不会生成真实结果。</p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <div class="feedback-backdrop" id="feedbackDialog" hidden>
+    <section class="feedback-dialog" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle" aria-describedby="feedbackDemoNote">
+      <div class="feedback-dialog-heading">
+        <h2 id="feedbackTitle">这条回答哪里不好？</h2>
+        <button type="button" class="feedback-close" data-feedback-close title="关闭" aria-label="关闭反馈窗口">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="feedback-field-label">问题类型（可选）</div>
+      <div class="feedback-categories" role="group" aria-label="问题类型">
+        <button type="button" data-feedback-category="inaccurate" aria-pressed="false">结果不准确</button>
+        <button type="button" data-feedback-category="incomplete" aria-pressed="false">结果不完整</button>
+        <button type="button" data-feedback-category="misunderstood" aria-pressed="false">没有理解我的问题</button>
+        <button type="button" data-feedback-category="format" aria-pressed="false">格式/展示有问题</button>
+        <button type="button" data-feedback-category="other" aria-pressed="false">其他</button>
+      </div>
+      <label class="feedback-field-label" for="feedbackText">补充说明</label>
+      <textarea id="feedbackText" maxlength="2000" placeholder="可以说明哪里不对、期望看到什么；不填也可以直接提交"></textarea>
+      <div class="feedback-counter" id="feedbackCounter" aria-live="polite">0 / 2000</div>
+      <p class="feedback-demo-note" id="feedbackDemoNote">静态演示：提交只在此页面显示状态，不会发送反馈或沉淀知识。</p>
+      <div class="feedback-dialog-footer">
+        <button type="button" class="feedback-cancel" data-feedback-close>取消</button>
+        <button type="button" class="feedback-submit" id="feedbackSubmit">提交</button>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="agent-polish-preview.js"></script>
+</body>
+</html>
