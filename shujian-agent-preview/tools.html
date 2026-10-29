@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6fa">
+  <title>工具与粒子 · 数鉴智能体预览</title>
+  <link rel="stylesheet" href="tools-preview.css?v=orbs-1">
+</head>
+<body>
+  <header class="tools-topbar">
+    <a class="back-link" href="index.html" aria-label="返回界面预览">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg>
+      <span>返回界面预览</span>
+    </a>
+    <div class="brand"><img src="assets/logo.png" alt="" width="25" height="25"><span>数鉴智能体</span></div>
+    <span class="preview-tag">工具与粒子</span>
+  </header>
+
+  <main class="tools-main">
+    <section class="tools-hero" aria-label="当前工具预览">
+      <div class="hero-orb">
+        <canvas id="heroOrb" width="120" height="120" aria-hidden="true"></canvas>
+        <span class="hero-icon" id="heroIcon" aria-hidden="true"></span>
+      </div>
+      <div class="hero-meta">
+        <h1 id="heroName">模型思考</h1>
+        <p><code id="heroKey">model-think</code> <strong>→ <span id="heroState">planning</span></strong></p>
+        <p class="hero-note">图标与粒子是同一条信息的两面：图标说明"用什么工具"，粒子说明"工具在做什么"。点下面的卡片切换，粒子走的是位移重组过渡。</p>
+      </div>
+    </section>
+
+    <section class="tools-section" aria-labelledby="boundTitle">
+      <h2 id="boundTitle">已绑定粒子的工具<span>点卡片切换上面的预览</span></h2>
+      <div class="tool-grid" id="boundGrid"></div>
+    </section>
+
+    <section class="tools-section" aria-labelledby="freeTitle">
+      <h2 id="freeTitle">其余图标<span>已登记但还没绑定粒子状态，需要时接上去即可</span></h2>
+      <div class="chip-grid" id="freeGrid"></div>
+    </section>
+  </main>
+
+  <script src="trace-tool-icons.js"></script>
+  <script type="module" src="orb-runtime/tools-page.js?v=orbs-1"></script>
+</body>
+</html>

@@ -1,19 +1,21 @@
 /* 外置预览适配器：直接调用项目内置的粒子引擎、状态解析、Logo 点阵与淡入曲线。 */
 import { MODE_FRAMES, paintFrame, resolvePreset } from './index.js'
 import { resolveAgentState, COMPLETE_PULSE_MS } from './agent-states.js'
-import {
-  STATE_FADE_MS,
-  fadeProgress,
-  shouldStartFade,
-  shouldCrossFade,
-  fadeOutScale,
-  fadeInScale
-} from './orb-fade.js'
+import { shouldStartFade } from './orb-fade.js'
+import { blendFrames, morphProgress } from './orb-morph.js'
+import { WAITING_FRAMES, isWaitingState, WAITING_SPEED } from './waiting.js'
 import { logoDotFrame, introTransition, INTRO_MS } from './orb-patterns.js'
 import { BRAND_HIGHLIGHT, completionPulse, hexToRgb, ORB_BRAND_COLOR } from './palette.js'
 
 function cappedDpr() {
   return Math.min(2, window.devicePixelRatio || 1)
+}
+
+/** 引擎预设按 20 / 32 / 64 三档调参（官网 Playground 也是这三个尺寸），按实际尺寸就近取档。 */
+function presetForSize(size) {
+  if (size <= 24) return 20
+  if (size <= 40) return 32
+  return 64
 }
 
 /**
@@ -25,7 +27,7 @@ export class OrbCanvas {
     this.canvas = canvas
     this.ctx = canvas && canvas.getContext('2d')
     this.size = Number(options.size) || 64
-    this.presetSize = this.size <= 24 ? 20 : 64
+    this.presetSize = presetForSize(this.size)
     this.pattern = options.pattern || ''
     this.introFromLogo = options.introFrom === 'logo'
     this.tint = hexToRgb(options.color || ORB_BRAND_COLOR)
@@ -33,7 +35,8 @@ export class OrbCanvas {
     this.state = ''
     this.frameConfig = null
     this.previousFrame = null
-    this.fadeStartedAt = 0
+    this.morphStartedAt = 0
+    this.lastBlended = null
     this.completePulseStartedAt = 0
     this.paused = Boolean(options.paused)
     this.manualReducedMotion = Boolean(options.reducedMotion)
@@ -53,7 +56,8 @@ export class OrbCanvas {
       if (this.reducedMotion) {
         this.stop()
         this.previousFrame = null
-        this.fadeStartedAt = 0
+        this.morphStartedAt = 0
+        this.lastBlended = null
         this.introStartedAt = 0
         this.introProgress = 1
         this.draw(performance.now(), 1)
@@ -85,12 +89,27 @@ export class OrbCanvas {
   }
 
   makeFrameConfig(rawState) {
+    // 待命族是预览侧自绘形态（上游 9 个 mode 里没有等待态），因此不走
+    // resolvePreset；logo 图案优先级更高，在这里之前已经分流。
+    if (this.pattern !== 'logo' && isWaitingState(rawState)) {
+      const key = String(rawState).trim().toLowerCase()
+      return {
+        engineState: key,
+        pulse: false,
+        frameFn: WAITING_FRAMES[key],
+        opts: {},
+        speed: WAITING_SPEED,
+        tint: this.tint
+      }
+    }
     const resolved = resolveAgentState(rawState)
     const preset = resolvePreset(resolved.engineState, this.presetSize)
     const frameFn = this.pattern === 'logo' ? logoDotFrame : MODE_FRAMES[preset.mode]
+    // 预览侧临时覆写（例如 compare.html?wave=30 把 wave 的相机倾角调到 30°）。
+    const previewOpts = (window.PREVIEW_ORB_OPTS && window.PREVIEW_ORB_OPTS[resolved.engineState]) || null
     const opts = this.pattern
       ? {}
-      : { ...preset.opts, ...(resolved.opts || {}) }
+      : { ...preset.opts, ...(resolved.opts || {}), ...(previewOpts || {}) }
     const stateSpeed = resolved.speed == null ? 1 : resolved.speed
     const speed = (this.pattern ? 1 : preset.speed) * stateSpeed
     return { engineState: resolved.engineState, pulse: resolved.pulse, frameFn, opts, speed, tint: this.tint }
@@ -101,15 +120,25 @@ export class OrbCanvas {
     const next = String(nextState || 'composing')
     if (!initial && next === this.state) return
     const resolved = resolveAgentState(next)
-    const snapshot = this.frameConfig
-      ? { frameFn: this.frameConfig.frameFn, opts: { ...this.frameConfig.opts }, tint: this.frameConfig.tint }
-      : null
+    // 过渡进行中又被要求切换时，用**画面上的当前混合态**当起点：
+    // 否则粒子会从上一个形态的目标位置重新起步，连发的状态事件看上去就是跳帧。
+    const snapshot = this.previousFrame && this.lastBlended
+      ? { frozen: this.lastBlended }
+      : (this.frameConfig
+        ? {
+            frameFn: this.frameConfig.frameFn,
+            opts: { ...this.frameConfig.opts },
+            tint: this.frameConfig.tint,
+            speed: this.frameConfig.speed
+          }
+        : null)
     this.previousFrame = shouldStartFade({
       reduced: this.reducedMotion,
       paused: this.paused,
       hasSnapshot: Boolean(snapshot)
     }) ? snapshot : null
-    this.fadeStartedAt = this.previousFrame ? performance.now() : 0
+    this.morphStartedAt = this.previousFrame ? performance.now() : 0
+    this.lastBlended = null
     if (resolved.pulse && this.state !== 'complete') this.completePulseStartedAt = performance.now()
     else if (!resolved.pulse) this.completePulseStartedAt = 0
     this.state = next
@@ -123,14 +152,15 @@ export class OrbCanvas {
     const size = Number(nextSize)
     if (!Number.isFinite(size) || size <= 0 || this.destroyed) return
     this.size = size
-    this.presetSize = size <= 24 ? 20 : 64
+    this.presetSize = presetForSize(size)
     const dpr = cappedDpr()
     this.canvas.width = Math.round(size * dpr)
     this.canvas.height = Math.round(size * dpr)
     this.canvas.style.width = size + 'px'
     this.canvas.style.height = size + 'px'
     this.previousFrame = null
-    this.fadeStartedAt = 0
+    this.morphStartedAt = 0
+    this.lastBlended = null
     if (this.state) this.frameConfig = this.makeFrameConfig(this.state)
     this.draw(performance.now(), 1)
     if (!this.reducedMotion && !this.paused) this.start()
@@ -141,7 +171,8 @@ export class OrbCanvas {
     if (this.paused) {
       this.stop()
       this.previousFrame = null
-      this.fadeStartedAt = 0
+      this.morphStartedAt = 0
+      this.lastBlended = null
       this.draw(performance.now(), 1)
     } else if (!this.reducedMotion) {
       this.draw(performance.now(), 1)
@@ -155,7 +186,8 @@ export class OrbCanvas {
     if (this.reducedMotion) {
       this.stop()
       this.previousFrame = null
-      this.fadeStartedAt = 0
+      this.morphStartedAt = 0
+      this.lastBlended = null
       this.introStartedAt = 0
       this.introProgress = 1
       this.draw(performance.now(), 1)
@@ -173,15 +205,15 @@ export class OrbCanvas {
     else this.stop()
   }
 
-  draw(nowMs, fadeOverride) {
+  draw(nowMs, morphOverride) {
     if (!this.ctx || !this.frameConfig) return
     const size = this.size
     const dpr = cappedDpr()
     const ctx = this.ctx
     const tSec = (nowMs / 1000) * this.frameConfig.speed
-    const fade = fadeOverride == null
-      ? (this.fadeStartedAt ? fadeProgress(nowMs - this.fadeStartedAt, STATE_FADE_MS) : 1)
-      : fadeOverride
+    const raw = morphOverride == null
+      ? (this.morphStartedAt ? morphProgress(nowMs - this.morphStartedAt) : 1)
+      : morphOverride
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     ctx.clearRect(0, 0, size, size)
     const half = size / 2
@@ -205,27 +237,29 @@ export class OrbCanvas {
       ctx.restore()
       return
     }
-    if (shouldCrossFade(this.previousFrame, fade)) {
-      ctx.globalAlpha = 1 - fade
-      ctx.translate(half, half)
-      ctx.scale(fadeOutScale(fade), fadeOutScale(fade))
-      ctx.translate(-half, -half)
-      paintFrame(ctx, this.previousFrame.frameFn(size, tSec, this.previousFrame.opts), false, this.previousFrame.tint)
-      ctx.restore()
-      ctx.save()
-      ctx.globalAlpha = fade
-      ctx.translate(half, half)
-      ctx.scale(fadeInScale(fade), fadeInScale(fade))
-      ctx.translate(-half, -half)
-      paintFrame(ctx, this.frameConfig.frameFn(size, tSec, this.frameConfig.opts), false, this.frameConfig.tint)
+    if (this.previousFrame) {
+      // 同一帧里采样新旧两个形态，逐粒插值出中间态：粒子走的是连续路径，
+      // 不再靠透明度把两团点溶解在一起。
+      const oldFrame = this.sampleFrame(this.previousFrame, size, nowMs)
+      const blended = blendFrames(
+        oldFrame,
+        this.frameConfig.frameFn(size, tSec, this.frameConfig.opts),
+        raw,
+        half,
+        half
+      )
+      // 记住这一刻的混合结果：过渡中途再来一次切换时，它直接成为新的起点。
+      this.lastBlended = blended
+      paintFrame(ctx, blended, false, this.frameConfig.tint)
+      if (raw >= 1) {
+        this.morphStartedAt = 0
+        this.previousFrame = null
+        this.lastBlended = null
+      }
     } else {
       paintFrame(ctx, this.frameConfig.frameFn(size, tSec, this.frameConfig.opts), false, this.frameConfig.tint)
     }
     ctx.restore()
-    if (this.fadeStartedAt && fade >= 1) {
-      this.fadeStartedAt = 0
-      this.previousFrame = null
-    }
     if (this.frameConfig.pulse && this.completePulseStartedAt) {
       const pulse = completionPulse((nowMs - this.completePulseStartedAt) / COMPLETE_PULSE_MS)
       if (pulse > 0) {
@@ -243,6 +277,19 @@ export class OrbCanvas {
         ctx.restore()
       }
     }
+  }
+
+  /**
+   * 取过渡「起点」那一边的形态。
+   *
+   * <p>两种来源：过渡被中途打断时是**冻结的混合结果**（`frozen`，已经是坐标数组），
+   * 其余情况是上一次的形态函数——它仍按自己的速度在走，因此过渡期间两个形态
+   * 都在动，读起来是「活的粒子在重排」，而不是两帧定格图在互相溶解。</p>
+   */
+  sampleFrame(snapshot, size, nowMs) {
+    if (snapshot.frozen) return snapshot.frozen
+    const speed = snapshot.speed == null ? 1 : snapshot.speed
+    return snapshot.frameFn(size, (nowMs / 1000) * speed, snapshot.opts)
   }
 
   start() {

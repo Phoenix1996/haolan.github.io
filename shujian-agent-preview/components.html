@@ -43,10 +43,17 @@
           <textarea class="sample-input" id="sampleInput" placeholder="输入问题或补充说明…"></textarea>
           <p class="sample-help">辅助说明用于解释输入格式或下一步操作。</p>
         </section>
+        <section class="component-card component-card--wide">
+          <h2>轨迹工具图标</h2>
+          <p class="component-note">执行轨迹里每一步的图标。带紫底的是当前启用的四个，其余为预留：在轨迹的 <code>&lt;li&gt;</code> 上写 <code>data-tool="sql"</code> 即可使用，未登记的取值落到 <code>default</code>。图标取自 morphicons 站点仓库的 icon-sets（Remix / Tabler），只取图标、不用它的形变动画。</p>
+          <div class="icon-set-bar" id="iconSetBar" role="group" aria-label="切换图标集"></div>
+          <div class="icon-catalog" id="iconCatalog"></div>
+        </section>
       </div>
     </div>
   </main>
   <div class="toast" id="componentToast" role="status" aria-live="polite"></div>
+  <script src="trace-tool-icons.js"></script>
   <script>
     (function () {
       const toast = document.getElementById('componentToast');
@@ -64,6 +71,67 @@
           document.querySelectorAll('.sample-tabs [role="tab"]').forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
         });
       });
+
+      // 图标目录：把 trace-tool-icons.js 里登记的多套图标列出来，标出哪些在用、哪些是预留。
+      // 切换的那一套记进 localStorage，界面预览页读同一个键，两边保持一致。
+      const catalog = document.getElementById('iconCatalog');
+      const setBar = document.getElementById('iconSetBar');
+      const sets = window.TRACE_TOOL_SETS || {};
+      const labels = window.TRACE_TOOL_LABELS || {};
+      const used = window.TRACE_TOOL_USED || [];
+      const setIds = Object.keys(sets);
+
+      if (catalog && setIds.length) {
+        let active = window.TRACE_TOOL_ACTIVE || setIds[0];
+        try {
+          const saved = window.localStorage.getItem('traceIconSet');
+          if (saved && sets[saved]) active = saved;
+        } catch (error) { /* localStorage 不可用时用默认值 */ }
+
+        const renderGlyph = (value, set) => {
+          if (value && typeof value === 'object' && value.file) {
+            return '<span class="icon-mask" style="--icon-src:url(&quot;' + value.file + '&quot;)"></span>';
+          }
+          return '<svg viewBox="' + (set.viewBox || '0 0 24 24') + '" data-style="' + (set.style || 'stroke') + '" aria-hidden="true">' + String(value) + '</svg>';
+        };
+
+        const renderCatalog = () => {
+          const set = sets[active];
+          catalog.innerHTML = '';
+          Object.keys(set.icons).forEach((key) => {
+            const item = document.createElement('div');
+            item.className = 'icon-catalog__item' + (used.indexOf(key) === -1 ? '' : ' is-used');
+            const orb = typeof window.traceToolOrb === 'function' ? window.traceToolOrb(key) : '';
+            const orbLabel = orb && typeof window.traceToolOrbLabel === 'function' ? window.traceToolOrbLabel(orb) : orb;
+            item.innerHTML =
+              '<span class="icon-catalog__glyph">' + renderGlyph(set.icons[key], set) + '</span>' +
+              '<span class="icon-catalog__meta"><strong>' + (labels[key] || key) + '</strong><code>' + key + '</code>' +
+              (orb && used.indexOf(key) !== -1 ? '<em class="icon-catalog__orb">→ ' + orbLabel + '</em>' : '') +
+              '</span>';
+            catalog.appendChild(item);
+          });
+          if (setBar) {
+            setBar.querySelectorAll('[data-icon-set]').forEach((button) => {
+              button.setAttribute('aria-pressed', String(button.dataset.iconSet === active));
+            });
+          }
+        };
+
+        if (setBar) {
+          setBar.innerHTML = setIds.map((id) =>
+            '<button type="button" data-icon-set="' + id + '" aria-pressed="false">' + sets[id].label + '</button>'
+          ).join('');
+          setBar.querySelectorAll('[data-icon-set]').forEach((button) => {
+            button.addEventListener('click', () => {
+              active = button.dataset.iconSet;
+              try { window.localStorage.setItem('traceIconSet', active); } catch (error) { /* 忽略 */ }
+              renderCatalog();
+            });
+          });
+        }
+
+        renderCatalog();
+      }
     })();
   </script>
 </body>

@@ -18,6 +18,7 @@
       <button type="button" data-view="welcome" aria-pressed="false">新对话</button>
     </div>
     <a class="preview-components-link" href="components.html">组件样式</a>
+    <a class="preview-orbs-link" href="tools.html">工具与粒子</a>
     <a class="preview-orbs-link" href="orbs.html">状态预览</a>
     <span class="preview-note">静态演示 · 不连接数据库</span>
   </div>
@@ -25,7 +26,7 @@
   <div class="app-shell" id="appShell">
     <aside class="sidebar" id="sidebar" aria-label="对话导航">
       <button class="new-chat-button" type="button" data-view="welcome">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.75v14.5M4.75 12h14.5"/></svg>
         <span>新对话</span>
       </button>
 
@@ -88,7 +89,7 @@
       <header class="topbar">
         <div class="topbar-title">
           <button class="icon-button mobile-history-toggle" type="button" id="mobileHistoryToggle" aria-label="展开对话历史">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg>
           </button>
           <img src="assets/logo.png" alt="" class="topbar-logo" width="27" height="27">
           <span class="topbar-brand">数鉴智能体</span>
@@ -103,19 +104,21 @@
             <div>
               <h1 id="conversationHeading">对话</h1>
             </div>
-            <span class="completion-status" id="conversationStatus"><canvas id="taskStatusOrb" class="inline-orb" width="20" height="20" role="img" aria-label="完成状态动画"></canvas>演示已完成</span>
+            <span class="completion-status" id="conversationStatus"><canvas id="taskStatusOrb" class="inline-orb" width="24" height="24" role="img" aria-label="状态动画"></canvas><span class="completion-tool" id="conversationTool" aria-hidden="true" hidden></span><span class="completion-text" id="conversationText">演示已完成</span></span>
           </div>
 
           <div class="chat-body" id="chatBody">
             <article class="message user-message">
-              <div class="message-meta"><span>我</span><time>11:24</time></div>
               <div class="user-bubble">对比华东区 2025 年 Q3 与 Q4 的营业收入和毛利率，说明变化。</div>
+              <div class="message-actions user-message-actions">
+                <button type="button" class="message-action-icon" data-copy="对比华东区 2025 年 Q3 与 Q4 的营业收入和毛利率，说明变化。" title="复制提问" aria-label="复制提问">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2"/></svg>
+                </button>
+                <span class="message-action-meta"><time>11:24</time></span>
+              </div>
             </article>
 
             <article class="message assistant-message">
-              <div class="assistant-message-head">
-                <div><strong>数鉴智能体</strong><span>回答</span></div>
-              </div>
               <div class="assistant-answer">
                 <p>2025 年 Q4，华东区营业收入较 Q3 <strong>增长 10.7%</strong>，毛利率上升 <strong>1.6 个百分点</strong>。</p>
                 <p>收入从 1,284 万元升至 1,421 万元；毛利率从 28.6% 升至 30.2%。两项指标同步改善。</p>
@@ -149,6 +152,13 @@
             <h2>有什么可以帮您的吗？</h2>
           </div>
 
+          <div class="run-strip" id="runStrip" role="status" aria-live="polite" hidden>
+            <span class="run-strip-lead"><canvas id="runStripOrb" width="40" height="40" aria-hidden="true"></canvas><span class="run-strip-icon" id="runStripIcon" aria-hidden="true"></span></span>
+            <span class="run-strip-text" id="runStripText">正在准备…</span>
+            <span class="run-strip-meta"><span id="runStripTime">0.0s</span></span>
+            <button type="button" class="run-strip-stop" id="runStripStop">停止</button>
+          </div>
+
           <form class="composer" id="composer">
             <label class="composer-input-wrap">
               <span class="sr-only">输入问题</span>
@@ -174,10 +184,9 @@
                   </div>
                 </div>
                 <span class="composer-mode-hint" id="composerModeHint" hidden></span>
-                <span class="composer-shortcut-hint">Enter 发送 <i></i> Shift+Enter 换行</span>
               </div>
               <div class="composer-actions">
-                <button class="voice-mode-button" type="button" data-voice-orb-toggle data-toast="连续语音入口仅作预览，不会采集音频。"><canvas id="voiceControlOrb" class="inline-orb" width="20" height="20" aria-hidden="true"></canvas><span>连续语音</span></button>
+                <button class="icon-button voice-mode-button" type="button" data-voice-orb-toggle data-toast="连续语音入口仅作预览，不会采集音频。" aria-pressed="false" aria-label="连续语音" title="连续语音（预览，不采集音频）"><canvas id="voiceControlOrb" class="inline-orb" width="20" height="20" aria-hidden="true"></canvas></button>
                 <button class="icon-button mic-button" id="micButton" type="button" aria-label="开启语音输入（演示）" title="语音输入（演示）">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg>
                 </button>
@@ -311,10 +320,11 @@ ORDER BY quarter;</code></pre>
             <section class="primary-panel trace-panel" data-primary-panel="trace" hidden>
               <div class="trace-summary"><span class="trace-status-dot"></span><div><strong>执行已完成</strong><span>这是预览的模拟轨迹，不含真实任务事件。</span></div></div>
               <ol class="trace-list">
-                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>请求已受理</strong><span>准备读取当前对话上下文</span></div><time>11:24:03</time></li>
-                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>检查可用指标</strong><span>匹配营业收入与毛利率</span></div><time>11:24:04</time></li>
-                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>生成只读查询</strong><span>按区域与季度整理演示数据</span></div><time>11:24:05</time></li>
-                <li class="is-done"><span class="trace-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg></span><div><strong>整理结果与解读</strong><span>生成图表和简要说明</span></div><time>11:24:06</time></li>
+                <li class="is-done" data-tool="model-think" tabindex="0" role="button" aria-label="预览「模型思考」对应的粒子状态"><span class="trace-step-icon"></span><div><strong>模型思考</strong><span>拆解问题，确定比较口径</span></div><time>11:24:03</time></li>
+                <li class="is-done" data-tool="retrieve-dict" tabindex="0" role="button" aria-label="预览「检索词典」对应的粒子状态"><span class="trace-step-icon"></span><div><strong>检索词典</strong><span>在指标字典中匹配营业收入、毛利率</span></div><time>11:24:04</time></li>
+                <li class="is-done" data-tool="retrieve-text" tabindex="0" role="button" aria-label="预览「检索文字」对应的粒子状态"><span class="trace-step-icon"></span><div><strong>检索文字</strong><span>检索口径说明与历史分析</span></div><time>11:24:05</time></li>
+                <li class="is-done" data-tool="execute-query" tabindex="0" role="button" aria-label="预览「执行查询」对应的粒子状态"><span class="trace-step-icon"></span><div><strong>执行查询</strong><span>对演示数据执行只读查询</span></div><time>11:24:06</time></li>
+                <li class="is-done" data-tool="model-think" tabindex="0" role="button" aria-label="预览「模型思考」汇总对应的粒子状态"><span class="trace-step-icon"></span><div><strong>模型思考</strong><span>汇总结果并生成解读</span></div><time>11:24:07</time></li>
               </ol>
               <div class="trace-disclaimer">演示轨迹不代表真实 Agent 执行。</div>
             </section>
@@ -343,7 +353,7 @@ ORDER BY quarter;</code></pre>
       <div class="feedback-dialog-heading">
         <h2 id="feedbackTitle">这条回答哪里不好？</h2>
         <button type="button" class="feedback-close" data-feedback-close title="关闭" aria-label="关闭反馈窗口">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 5.5 13 13M18.5 5.5 5.5 18.5"/></svg>
         </button>
       </div>
       <div class="feedback-field-label">问题类型（可选）</div>
@@ -365,6 +375,7 @@ ORDER BY quarter;</code></pre>
     </section>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="trace-tool-icons.js"></script>
   <script src="agent-polish-preview.js?v=orbs-1"></script>
   <script type="module" src="orb-runtime/main-page.js?v=orbs-1"></script>
 </body>

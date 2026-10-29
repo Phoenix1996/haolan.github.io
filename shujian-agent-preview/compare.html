@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6fa">
+  <title>形态对照 · 数鉴智能体预览</title>
+  <link rel="stylesheet" href="tools-preview.css?v=orbs-1">
+  <link rel="stylesheet" href="compare-preview.css?v=orbs-1">
+</head>
+<body>
+  <header class="tools-topbar">
+    <a class="back-link" href="index.html" aria-label="返回界面预览">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg>
+      <span>返回界面预览</span>
+    </a>
+    <div class="brand"><img src="assets/logo.png" alt="" width="25" height="25"><span>数鉴智能体</span></div>
+    <span class="preview-tag">形态对照</span>
+  </header>
+
+  <main class="compare-main">
+    <section class="compare-intro">
+      <h1>引擎的形态，同时并排</h1>
+      <p>官网 <code>thinking-orbs</code> 的 <code>OrbState</code> 一共九个，这里摆八个——<strong>shaping（形变）我们不用</strong>，所以没有放进来。下面每个都是实时渲染，尺寸可切；英文是引擎里的状态名，中文是我们自己的叫法，灰色小字是官网演示里给这一档换的展示文案。</p>
+      <div class="compare-sizes" role="group" aria-label="切换尺寸">
+        <button type="button" data-compare-size="20">20</button>
+        <button type="button" data-compare-size="32">32</button>
+        <button type="button" data-compare-size="64" aria-pressed="true">64</button>
+        <button type="button" data-compare-size="104">104</button>
+      </div>
+    </section>
+
+    <div class="compare-grid" id="compareGrid"></div>
+
+    <p class="compare-foot">官网 <code>/orbs</code> 页面上那颗写着「Agent planning…」的胶囊，源码里绑定的是 <code>weaving</code>（<code>sites/orbs/components/Examples.tsx</code> 的 <code>LABEL_OVERRIDES</code>）。如果下面哪个都不像，那说明我拿到的源码和你看到的页面不是同一版，你指一下最接近的那个，我按那个调。</p>
+  </main>
+
+  <script type="module" src="orb-runtime/compare-page.js?v=orbs-1"></script>
+</body>
+</html>

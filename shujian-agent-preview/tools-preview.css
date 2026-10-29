@@ -1,0 +1,70 @@
+:root {
+  color-scheme: light;
+  --brand: #6558ef;
+  --brand-strong: #4f46c8;
+  --brand-soft: #eef0fb;
+  --ink: #30364a;
+  --muted: #5f6b7f;
+  --line: #e4e6ee;
+}
+* { box-sizing: border-box; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: #f5f6fa; color: var(--ink); font-family: "Segoe UI", "Microsoft YaHei", sans-serif; }
+button { font: inherit; color: inherit; }
+.tools-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 58px; padding: 0 28px; border-bottom: 1px solid #e7e8ef; background: rgba(255, 255, 255, .92); }
+.back-link, .brand { display: inline-flex; align-items: center; gap: 8px; color: #4f5c73; font-size: 13px; text-decoration: none; white-space: nowrap; }
+.back-link:hover { color: var(--brand-strong); }
+.back-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.brand { color: var(--ink); font-weight: 650; }
+.brand img { object-fit: contain; }
+.preview-tag { padding: 5px 9px; border-radius: 6px; background: var(--brand-soft); color: var(--brand-strong); font-size: 12px; white-space: nowrap; }
+
+.tools-main { width: min(1040px, calc(100% - 48px)); margin: 34px auto 56px; }
+
+.tools-hero { display: flex; align-items: center; gap: 28px; margin-bottom: 32px; padding: 26px; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: 0 10px 28px rgba(34, 41, 67, .06); }
+.hero-orb { position: relative; display: grid; place-items: center; flex: 0 0 120px; width: 120px; height: 120px; }
+.hero-orb canvas { display: block; width: 120px; height: 120px; }
+.hero-icon { position: absolute; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #e3e6ef; border-radius: 12px; background: #fff; color: var(--brand-strong); box-shadow: 0 6px 16px rgba(34, 41, 67, .12); }
+.hero-icon svg { width: 22px; height: 22px; }
+.hero-meta h1 { margin: 0 0 6px; font-size: 22px; letter-spacing: -.02em; }
+.hero-meta p { margin: 0 0 6px; color: var(--muted); font-size: 13px; }
+.hero-meta code { color: var(--brand-strong); font-size: 12px; }
+.hero-meta strong { color: var(--ink); font-size: 13px; font-weight: 600; }
+.hero-note { max-width: 560px; color: #667085 !important; font-size: 12px !important; line-height: 1.65; }
+
+.tools-section { margin-bottom: 30px; }
+.tools-section h2 { display: flex; align-items: baseline; gap: 9px; margin: 0 0 14px; font-size: 15px; }
+.tools-section h2 span { color: #667085; font-size: 12px; font-weight: 400; }
+
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
+.tool-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-align: left; cursor: pointer; transition: border-color .14s ease, box-shadow .14s ease; }
+.tool-card:hover { border-color: #c9c4f5; box-shadow: 0 8px 20px rgba(34, 41, 67, .08); }
+.tool-card[aria-pressed="true"] { border-color: var(--brand-strong); box-shadow: 0 0 0 3px rgba(101, 88, 239, .1); }
+.tool-card:focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 2px; }
+.tool-orb { position: relative; display: grid; place-items: center; flex: 0 0 56px; width: 56px; height: 56px; }
+.tool-orb canvas { display: block; width: 56px; height: 56px; }
+.tool-orb .tool-glyph { position: absolute; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px; background: rgba(255, 255, 255, .94); color: var(--brand-strong); box-shadow: 0 2px 6px rgba(34, 41, 67, .14); }
+.tool-orb .tool-glyph svg { width: 14px; height: 14px; }
+.tool-name { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+.tool-name strong { font-size: 13px; font-weight: 600; }
+.tool-name code { color: #667085; font-size: 11px; }
+.tool-name em { color: var(--brand-strong); font-size: 11px; font-style: normal; }
+
+.chip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 9px; }
+.icon-chip { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border: 1px solid #e8eaf0; border-radius: 8px; background: #fff; }
+.icon-chip .glyph { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 28px; border-radius: 7px; background: #f6f7fb; color: #55607a; }
+.icon-chip .glyph svg { width: 17px; height: 17px; }
+/* 填充型图标集自带 fill，不能再叠页面那层描边，否则实心形状会被描粗一圈。 */
+.hero-icon svg[data-style="fill"], .tool-glyph svg[data-style="fill"], .icon-chip svg[data-style="fill"] { stroke: none; }
+.icon-chip .meta { display: flex; min-width: 0; flex-direction: column; }
+.icon-chip .meta strong { color: #3c4457; font-size: 12px; font-weight: 600; }
+.icon-chip .meta code { color: #667085; font-size: 11px; }
+
+@media (max-width: 720px) {
+  .tools-topbar { padding: 0 15px; }
+  .tools-main { width: min(100% - 28px, 540px); margin: 22px auto 40px; }
+  .tools-hero { flex-direction: column; align-items: flex-start; gap: 18px; padding: 20px; }
+  .tool-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; }
+}

@@ -136,11 +136,13 @@ const frameRubik = (size, t, o) => {
   return finalizeFrame(dots, [], o.rMin);
 };
 const frameWave = (size, t, o) => {
-  var _a, _b, _c, _d, _e;
+  var _a, _b, _c, _d, _e, _f;
   const cx = size / 2;
   const cy = size / 2;
   const R = size / 2 * 0.874;
-  const pt = makeProj(t * 0.18, 0.38, cx, cy, 1);
+  // 相机倾角默认 0.38 rad（≈21.8°），与上游一致；预览侧可用 opts.camTilt 覆盖，
+  // 只为对齐观感，默认值不变，因此不影响上游几何。
+  const pt = makeProj(t * 0.18, (_f = o.camTilt) != null ? _f : 0.38, cx, cy, 1);
   const rs = radiusScale(size, (_a = o.rsPow) != null ? _a : 0.6);
   const dots = [];
   const rings = (_b = o.rings) != null ? _b : 15;

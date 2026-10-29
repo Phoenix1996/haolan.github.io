@@ -1,0 +1,24 @@
+.compare-main { width: min(1040px, calc(100% - 48px)); margin: 32px auto 56px; }
+.compare-intro h1 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.02em; }
+.compare-intro p { max-width: 760px; margin: 0 0 16px; color: #667085; font-size: 13px; line-height: 1.7; }
+.compare-intro code { color: var(--brand-strong); font-size: 12px; }
+.compare-sizes { display: flex; gap: 7px; margin-bottom: 22px; }
+.compare-sizes button { min-width: 46px; min-height: 30px; padding: 0 10px; border: 1px solid #dfe2eb; border-radius: 7px; background: #fff; color: #536078; font-size: 12px; cursor: pointer; }
+.compare-sizes button:hover { border-color: #bcb7f3; background: #faf9ff; }
+.compare-sizes button[aria-pressed="true"] { border-color: var(--brand-strong); background: var(--brand-soft); color: var(--brand-strong); font-weight: 600; }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
+.compare-card { display: flex; align-items: center; flex-direction: column; gap: 10px; padding: 16px 12px 13px; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-align: center; }
+.compare-card--alias { border-color: #d6d2f7; background: #faf9ff; }
+.compare-orb { display: grid; place-items: center; width: var(--compare-orb, 64px); height: var(--compare-orb, 64px); }
+.compare-orb canvas { display: block; width: var(--compare-orb, 64px); height: var(--compare-orb, 64px); }
+.compare-meta { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+.compare-meta strong { color: #3c4457; font-size: 13px; font-weight: 600; }
+.compare-meta code { color: #667085; font-size: 11px; }
+.compare-meta em { color: #9aa2b2; font-size: 11px; font-style: normal; }
+.compare-card--alias .compare-meta em { color: var(--brand-strong); }
+.compare-foot { max-width: 760px; margin: 26px 0 0; color: #667085; font-size: 12px; line-height: 1.7; }
+.compare-foot code { color: var(--brand-strong); font-size: 11px; }
+@media (max-width: 720px) {
+  .compare-main { width: min(100% - 28px, 540px); margin: 22px auto 40px; }
+  .compare-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+}

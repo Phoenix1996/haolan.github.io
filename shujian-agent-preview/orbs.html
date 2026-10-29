@@ -21,7 +21,7 @@
     <section class="intro">
       <div>
         <h1>让粒子状态跟着工作节奏变化</h1>
-        <p class="intro-copy">这里直接调用当前项目内置的 Orb 引擎、Logo 点阵和状态映射。选择状态时，同一张画布会平滑衔接。</p>
+        <p class="intro-copy">这里直接调用当前项目内置的 Orb 引擎、Logo 点阵和状态映射。引擎共 9 种形态，这里用 8 种（<strong>形变 shaping 不用</strong>），另加三档自绘的待命候选（<strong>核光 / 尘环 / 双弧</strong>），以及沿用上游 ring 的<strong>等待</strong>做对照。切换时同一批粒子沿各自路径位移到新排列，不靠淡入淡出。</p>
       </div>
       <a class="source-link" href="orb-runtime/ORIGIN.md">源码与许可</a>
     </section>
@@ -30,10 +30,15 @@
       <div class="control-panel">
         <div class="panel-heading">
           <h2>状态</h2>
-          <span id="stateLabel" class="state-chip">等待中</span>
+          <span id="stateLabel" class="state-chip">留白</span>
         </div>
         <div class="state-grid" role="group" aria-label="选择粒子状态">
-          <button type="button" data-state="idle" aria-pressed="true">等待</button>
+          <button type="button" data-state="waiting-a" aria-pressed="false">核光</button>
+          <button type="button" data-state="waiting-b" aria-pressed="false">尘环</button>
+          <button type="button" data-state="waiting-c" aria-pressed="false">双弧</button>
+          <button type="button" data-state="waiting-void" aria-pressed="true">留白</button>
+          <button type="button" data-state="waiting-logo" aria-pressed="false">归位</button>
+          <button type="button" data-state="idle" aria-pressed="false">等待</button>
           <button type="button" data-state="thinking" aria-pressed="false">思考</button>
           <button type="button" data-state="searching" aria-pressed="false">检索</button>
           <button type="button" data-state="generating" aria-pressed="false">生成</button>
@@ -41,11 +46,14 @@
           <button type="button" data-state="listening" aria-pressed="false">聆听</button>
           <button type="button" data-state="connecting" aria-pressed="false">连接</button>
           <button type="button" data-state="composing" aria-pressed="false">播报</button>
+          <button type="button" data-state="working" aria-pressed="false">轨道</button>
+          <button type="button" data-state="solving" aria-pressed="false">立方</button>
+          <button type="button" data-state="weaving" aria-pressed="false">规划</button>
         </div>
         <div class="mapping-card">
           <span>当前引擎状态</span>
-          <strong id="engineState">breathing</strong>
-          <p id="stateDescription">idle 映射到 breathing：低速呼吸。动画参数来自当前 agent-states.js 与 presets.js。</p>
+          <strong id="engineState">waiting-void</strong>
+          <p id="stateDescription">留白：由上游 breathing（ring）直接衍生——同样的环带与呼吸，只把落在 Logo 轮廓里的点拿掉；中间的空洞就是 Logo。</p>
         </div>
 
         <div class="control-section">
@@ -74,10 +82,10 @@
 
       <div class="orb-stage" id="orbStage">
         <div class="orb-stage-inner">
-          <canvas id="orbCanvas" width="104" height="104" role="img" aria-label="等待状态粒子动画"></canvas>
+          <canvas id="orbCanvas" width="104" height="104" role="img" aria-label="留白等待态粒子动画"></canvas>
           <div class="orb-caption">
-            <strong id="orbCaption">等待中</strong>
-            <span>开场沿用 Logo 过渡；状态变化使用 420ms 平滑交叉淡入</span>
+            <strong id="orbCaption">留白</strong>
+            <span>开场沿用 Logo 过渡；状态切换时粒子直接位移重组（560ms，逐粒错峰落位）</span>
           </div>
         </div>
         <div class="stage-footer">
@@ -91,11 +99,20 @@
       <summary>查看状态映射</summary>
       <div class="mapping-content" aria-label="状态映射说明">
         <h2>状态映射</h2>
-      <div class="mapping-row"><span>等待</span><code>idle → breathing</code><span>低速呼吸</span></div>
+      <div class="mapping-row"><span>核光（待命 A）</span><code>waiting-a</code><span>中心密、边缘疏的点云，亮度与大小向外衰减，整体 6% 慢呼吸</span></div>
+      <div class="mapping-row"><span>尘环（待命 B）</span><code>waiting-b</code><span>3/4 俯角细管尘环，绕竖轴约 21 秒一圈，靠深度明暗区分前后</span></div>
+      <div class="mapping-row"><span>双弧（待命 C）</span><code>waiting-c</code><span>两个反向旋转的椭圆点弧，交点随时间移动</span></div>
+      <div class="mapping-row"><span>留白（推荐）</span><code>waiting-void</code><span>由 breathing（ring）衍生：同一套环带与呼吸，只把落在 Logo 轮廓里的点挖掉，空洞即 Logo</span></div>
+      <div class="mapping-row"><span>归位</span><code>waiting-logo</code><span>中间留空，每 9.2 秒粒子聚成 Logo 轮廓：静候 4s → 归位 1.2s → 停留 2.2s → 散开 1.2s</span></div>
+      <div class="mapping-row"><span>等待（对照）</span><code>idle → breathing</code><span>沿用上游 ring 形态</span></div>
       <div class="mapping-row"><span>思考 / 生成</span><code>thinking / generating → composing</code><span>组织与连续流动</span></div>
-      <div class="mapping-row"><span>检索</span><code>searching → searching</code><span>球体检索形态</span></div>
+      <div class="mapping-row"><span>检索</span><code>searching → searching</code><span>球体检索形态（globe）</span></div>
       <div class="mapping-row"><span>完成</span><code>complete → breathing</code><span>低速收束并触发一次完成脉冲</span></div>
-      <div class="mapping-row"><span>聆听 / 连接 / 播报</span><code>listening / connecting / composing</code><span>已有引擎状态直传；播报使用 composing</span></div>
+      <div class="mapping-row"><span>聆听</span><code>listening → wave</code><span>上游 Waving 波纹形态</span></div>
+      <div class="mapping-row"><span>连接 / 播报</span><code>connecting → web</code><span>节点与连线；播报复用 ribbon</span></div>
+      <div class="mapping-row"><span>轨道</span><code>working → orbits</code><span>上游原生形态：多轨道绕转</span></div>
+      <div class="mapping-row"><span>立方</span><code>solving → rubik</code><span>上游原生形态：立方体面旋转</span></div>
+      <div class="mapping-row"><span>规划（planning）</span><code>weaving → braid</code><span>双股交错编织；官网的 Agent 演示把这档写作 planning</span></div>
       </div>
     </details>
   </main>
